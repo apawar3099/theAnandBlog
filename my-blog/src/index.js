@@ -1,3 +1,4 @@
+import "whatwg-fetch";  //this is used to support windows explorer or else use built-in fetch()
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

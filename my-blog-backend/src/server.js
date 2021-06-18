@@ -64,7 +64,7 @@ app.get("/api/articles/:name", async (req, res) => {
     
         res.status(200).json(articlesInfo); //json() is same as send()
 
-    }, res);
+    }, res); /// this whole is actually a (withDB FUNCTION CALL)
 
 });
 
@@ -77,9 +77,9 @@ app.post("/api/articles/:name/upvote", async (req, res) => {
 
     await db.collection("articles").updateOne({name : articleName}, 
         {'$set' : 
-        {
-            upvotes: articlesInfo.upvotes+1,
-        },
+            {
+                upvotes: articlesInfo.upvotes+1,
+            },
     });
 
     const updatedArticlesInfo = await db.collection("articles").findOne({name : articleName});
@@ -102,9 +102,9 @@ app.post("/api/articles/:name/upvote", async (req, res) => {
 
 //     await db.collection("articles").updateOne({name : articleName}, 
 //         {'$set' : 
-//         {
-//             upvotes: articlesInfo.upvotes+1,
-//         },
+    //         {
+    //             upvotes: articlesInfo.upvotes+1,
+    //         },
 //     });
 
 //     const updatedArticlesInfo = await db.collection("articles").findOne({name : articleName});
@@ -119,7 +119,7 @@ app.post("/api/articles/:name/upvote", async (req, res) => {
     
 // })   // THIS IS POST CODE WITHOUT REFRACTORING
 
-app.post("/api/articles/:name/add-comment", (req, res) => {
+app.post("/api/articles/:name/add-comment",  async (req, res) => {
     const { username, text } = req.body;
     const articleName = req.params.name;
 
@@ -128,9 +128,9 @@ app.post("/api/articles/:name/add-comment", (req, res) => {
 
         await db.collection("articles").updateOne({name : articleName}, 
             {'$set' : 
-            {
-                comments: articlesInfo.comments.concat({username, text}),
-            },
+                {
+                    comments: articlesInfo.comments.concat({username, text}),
+                },
         });
         
         const updatedArticlesInfo = await db.collection("articles").findOne({name : articleName});
