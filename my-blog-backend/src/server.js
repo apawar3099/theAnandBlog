@@ -1,10 +1,12 @@
 import express from "express"
 import bodyParser from "body-parser"
-
+import path from "path";
 import {MongoClient} from 'mongodb';
 
 const app = express();
 
+
+app.use(express.static(path.join(__dirname, "/build")))
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
@@ -156,5 +158,10 @@ app.post("/api/articles/:name/add-comment",  async (req, res) => {
 
 //     res.status(200).send(articlesInfo[articleName]);
 // }) // THIS WAS POST METHOD BEFORE USING MONGODB
+
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname + "/build/index.html"))
+})  //requests that aren't caught by any of our other API routes that aren't caught by any of our other API routes should be passes on to our app
 
 app.listen(8000, ()=> console.log("listening on PORT 8000 "))
